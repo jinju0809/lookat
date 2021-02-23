@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.FGroup.ShoppingMall.dao.MemberDao">
+
+	<select id="memberView" resultType="com.FGroup.ShoppingMall.dto.MemberDto">
+		SELECT *
+		  FROM MEMBERS
+		 WHERE M_NO = #{NO}
+	</select>
+
+	<select id="login" resultType="com.FGroup.ShoppingMall.dto.MemberDto">
+		SELECT *
+		  FROM MEMBERS
+		 WHERE M_ID = #{param1}
+		   AND M_PW = #{param2}
+	</select>
+	
+	<select id="idCheck" resultType="com.FGroup.ShoppingMall.dto.MemberDto">
+		SELECT M_ID
+		  FROM MEMBERS
+		 WHERE M_ID = #{param1}
+	</select>
+	
+	<select id="emailCheck" resultType="com.FGroup.ShoppingMall.dto.MemberDto">
+		SELECT M_EMAIL
+		  FROM MEMBERS
+		 WHERE M_EMAIL = #{param2}
+	   AND NOT M_ID = #{param1}
+	</select>
+	
+	<select id="findId" resultType="com.FGroup.ShoppingMall.dto.MemberDto">
+		SELECT M_ID, M_GRADE, M_REGDATE
+		  FROM MEMBERS
+		 WHERE M_NAME = #{param1}
+		   AND M_EMAIL = #{param2}
+	</select>
+	
+	<select id="findPassword" resultType="com.FGroup.ShoppingMall.dto.MemberDto">
+		SELECT *
+		  FROM MEMBERS
+		 WHERE M_ID = #{param1}
+		   AND M_NAME = #{param2}
+		   AND M_EMAIL = #{param3}
+	</select>
+	
+	<insert id="register">
+		INSERT INTO
+	   MEMBERS (M_NO, M_ID, M_PW, M_NAME, M_PHONE, M_EMAIL, M_COUPON, M_POINT, M_GRADE, M_REGDATE)
+		VALUES (MEMBERS_SEQ.NEXTVAL, #{param1}, #{param2}, #{param3}, #{param4}, #{param5}, DEFAULT, DEFAULT, DEFAULT, DEFAULT)
+	</insert>
+	
+	<update id="changePassword" parameterType="com.FGroup.ShoppingMall.dto.MemberDto" >
+		UPDATE MEMBERS
+		   SET M_PW = #{param2}
+		 WHERE M_ID = #{param1}
+	</update>
+	
+	<update id="memberUpdate" parameterType="com.FGroup.ShoppingMall.dto.MemberDto" >
+		UPDATE MEMBERS
+		   SET M_NAME = #{param2},
+		       M_ADDR1 = #{param3},
+		       M_ADDR2 = #{param4},
+		       M_ADDR3 = #{param5},
+		       M_PHONE = #{param6},
+		       M_EMAIL = #{param7}
+		 WHERE M_NO = #{param1}
+	</update>
+	
+	<delete id="memberDelete" parameterType="int">
+		DELETE
+		  FROM MEMBERS
+		 WHERE M_NO = #{param1}
+	</delete>
+	
+</mapper>

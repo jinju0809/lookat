@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.FGroup.ShoppingMall.dao.R_ReplyDao">
+
+	<select id="replyList" parameterType="int" resultType="com.FGroup.ShoppingMall.dto.R_ReplyDto">
+		SELECT *
+		  FROM R_REPLY
+		 WHERE R_RV_NO = #{r_rv_no}
+	  ORDER BY R_GROUP DESC,
+			   R_GROUPORD ASC
+	</select>
+	
+	<insert id="replyInsert" parameterType="com.FGroup.ShoppingMall.dto.R_ReplyDto">
+		INSERT INTO
+	   R_REPLY (R_NO, R_WRITER,  R_CONTENT, R_DATE, R_RV_NO, R_EDITDATE, R_M_NO, R_DELETE, R_GROUP, R_GROUPORD, R_DEPTH)
+		VALUES (R_REPLY_SEQ.NEXTVAL, #{param1}, #{param2}, SYSDATE, #{param3}, SYSDATE, #{param4}, 0, R_REPLY_SEQ.CURRVAL, 0, 0)
+	</insert>
+	
+	<!-- 대댓글 -->
+	<insert id="rereplyInsert" parameterType="com.FGroup.ShoppingMall.dto.R_ReplyDto">
+		INSERT INTO
+	   R_REPLY (R_NO, R_WRITER, R_CONTENT, R_DATE, R_RV_NO, R_EDITDATE, R_M_NO, R_DELETE, R_GROUP, R_GROUPORD, R_DEPTH)
+		VALUES (R_REPLY_SEQ.NEXTVAL, #{param1}, #{param2}, SYSDATE, #{param3}, SYSDATE, #{param4}, 0, #{param6}, #{param7}, #{param8})
+	</insert>
+	
+	<update id="replyUpdatebGroupOrd" parameterType="map">
+		UPDATE R_REPLY
+		   SET R_GROUPORD = R_GROUPORD + 1
+		 WHERE R_GROUP = #{r_group}
+		   AND R_GROUPORD > #{r_groupOrd}
+	</update>
+	
+	<delete id="replyDelete" parameterType="int">
+		DELETE
+		  FROM R_REPLY
+		 WHERE R_NO = #{r_no}
+	</delete>
+	
+	<select id="replyCount" parameterType="int" resultType="int">
+		SELECT COUNT(*)
+		  FROM R_REPLY
+		 WHERE R_RV_NO = #{r_rv_no}
+	</select>
+	
+	<delete id="allReplyDelete" parameterType="int">
+		DELETE
+		  FROM R_REPLY
+		 WHERE R_RV_NO = #{rv_no}
+	</delete>
+	
+	<update id="replyUpdate">
+		UPDATE R_REPLY
+		   SET R_CONTENT = #{param2}
+		 WHERE R_NO = #{param1}
+	</update>
+	
+</mapper>

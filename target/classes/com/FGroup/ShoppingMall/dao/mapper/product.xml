@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.FGroup.ShoppingMall.dao.ProductDao">
+
+	<select id="productReview" parameterType="int" resultType="com.FGroup.ShoppingMall.dto.ReviewDto">
+		SELECT B.*
+		  FROM (SELECT ROWNUM AS RN, A.*
+				  FROM (SELECT N.*, M.M_NAME, P.*
+						  FROM REVIEWS N,
+						       MEMBERS M,
+						       PRODUCT P
+						 WHERE N.RV_M_NO = M.M_NO
+						   AND N.RV_P_NO = P.P_NO
+					  ORDER BY N.RV_NO DESC) A ) B
+		 WHERE B.RN BETWEEN #{param1} AND #{param2}
+	</select>
+	
+	<select id="productList" resultType="com.FGroup.ShoppingMall.dto.ProductDto">
+		SELECT *
+		  FROM PRODUCT
+	</select>
+	
+	<select id="productCategory" parameterType="String" resultType="com.FGroup.ShoppingMall.dto.ProductDto">
+		SELECT *
+		  FROM PRODUCT
+		 WHERE P_CATEGORY = #{p_Category}
+	</select>
+	
+	<select id="productView" parameterType="int" resultType="com.FGroup.ShoppingMall.dto.ProductDto">
+		SELECT *
+		  FROM PRODUCT
+		 WHERE P_NO = #{p_No}
+	</select>
+
+	<select id="productViews" parameterType="String" resultType="com.FGroup.ShoppingMall.dto.ProductDto">
+		SELECT *
+		  FROM PRODUCT
+		 WHERE P_NAME = #{param1}
+		   AND P_COLOR = #{param2}
+	</select>
+
+	<select id="productInfo" parameterType="int" resultType="com.FGroup.ShoppingMall.dto.ProductDto">
+		SELECT *
+		  FROM PRODUCT
+		 WHERE P_NO = #{param1}
+	</select>
+
+	<select id="searchPage" resultType="com.FGroup.ShoppingMall.dto.ProductDto">
+		SELECT *
+		  FROM PRODUCT
+		 WHERE P_CATEGORY LIKE '%' || #{search} || '%'
+			OR P_NAME LIKE '%' || #{search} || '%'
+			OR P_NO LIKE '%' || #{search} || '%'
+			OR P_COLOR LIKE '%' || #{search} || '%'
+	</select>
+
+	<select id="productSearch" parameterType="com.FGroup.ShoppingMall.dto.ProductSearchDto" resultType="com.FGroup.ShoppingMall.dto.ProductSearchDto">
+		SELECT B.*
+		  FROM (SELECT A.*, ROWNUM AS RN
+				  FROM (SELECT *
+						  FROM PRODUCT
+						 WHERE UPPER(P_CATEGORY) LIKE UPPER('%' || #{p_Category} || '%')
+						<if test="search_type =='p_No'">
+						   AND UPPER(${search_type}) = UPPER(#{search})
+						</if>
+						<if test="search_type !='p_No'">
+						   AND UPPER(${search_type}) LIKE UPPER('%' || #{search} || '%')
+						</if>
+						   AND P_SIZE = 'S'
+						   AND P_PRICE BETWEEN #{p_Price1} AND #{p_Price2}
+					  ORDER BY
+					  <choose>
+					  	<when test="order_by=='p_Regdate'">P_REGDATE DESC</when>
+					  	<when test="order_by=='p_Name'">P_NAME ASC</when>
+					  </choose>
+					  ) A) B
+		 WHERE B.RN BETWEEN #{beginRecord} AND #{endRecord}
+	</select>
+
+	<!-- 검색된 리스트만 가져오는 것 searchCount -->
+	<select id="searchCount" parameterType="com.FGroup.ShoppingMall.dto.ProductSearchDto" resultType="int">
+		SELECT COUNT(*)
+		  FROM PRODUCT
+		 WHERE UPPER(P_CATEGORY) LIKE UPPER('%' || #{p_Category} || '%')
+		<if test="search_type =='p_No'">
+		   AND UPPER(${search_type}) = UPPER(#{search})
+		</if>
+		<if test="search_type !='p_No'">
+		   AND UPPER(${search_type}) LIKE UPPER('%' || #{search} || '%')
+		   AND P_SIZE = 'S'
+		</if>
+		   AND P_PRICE BETWEEN #{p_Price1} and #{p_Price2}
+	</select>
+	
+</mapper>

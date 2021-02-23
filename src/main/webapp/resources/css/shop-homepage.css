@@ -1,0 +1,180 @@
+/*!
+ * Start Bootstrap - Shop Homepage (https://startbootstrap.com/template/shop-homepage)
+ * Copyright 2013-2020 Start Bootstrap
+ * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-shop-homepage/blob/master/LICENSE)
+ */
+body {
+	padding-top: 56px;
+}
+
+.my-4 {
+	font-size: 4px;
+}
+
+*, ::after, ::before {
+	box-sizing: border-box;
+}
+
+html, body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre,
+	code, form, fieldset, legend, input, textarea, p, blockquote, th, td,
+	img {
+	margin: 0;
+	padding: 0;
+}
+/* scrollbar */
+#MOVE_TOP_BTN {
+	position: fixed;
+	right: 5%;
+	bottom: 15%;
+	display: none;
+	z-index: 1;
+}
+
+#MOVE_TOP_BTN:hover {
+	font-weight: bold;
+	text-decoration: none;
+	font-size: 16px;
+}
+
+.circle {
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	background-color: black;
+	text-align: center;
+	padding-top: 15px;
+}
+
+.circle:hover {
+	background-color: white;
+	border: 2px solid black;
+	transition-property: all;
+	transition-duration: 0.2s;
+	transition-timing-function: linear
+}
+
+.circle>h6 {
+	color: white;
+}
+
+.circle:hover>h6 {
+	display: none;
+}
+
+.circle>span {
+	display: none;
+	text-decoration: none;
+	color: black;
+	font-weight: 900;
+	font-size: 25px;
+	line-height: 20px;
+}
+
+.circle:hover>span {
+	display: inline;
+	transition-property: all;
+	transition-duration: 0.2s;
+	transition-timing-function: linear;
+}
+
+/* header */
+header {
+	display: block;
+	width: 100%;
+	position: fixed;
+	z-index: 1;
+}
+
+.logo>a>img {
+	width: 100%;
+}
+
+.logo {
+	width: 10%;
+	padding-top: 10px;
+	background-color: none;
+}
+
+#topLeftMenuContainer {
+	padding-top: 20px;
+	width: 50%;
+	float: left;
+	display: inline;
+	margin-left: 80px;
+	background-color: none;
+}
+
+#topRightMenuContainer {
+	padding-top: 20px;
+	width: 30%;
+	float: right;
+	display: inline;
+	background-color: none;
+}
+
+#leftMenu>li {
+	float: left;
+	list-style: none;
+	padding-left: 20px;
+	width: 10%;
+}
+
+#leftMenu>li>a {
+	font-size: 16px;
+	color: grey;
+}
+
+#leftMenu>li>ul>li {
+	display: none;
+	list-style: none;
+	float: left;
+}
+
+#leftMenu>li:hover>a {
+	color: lightgrey;
+	text-decoration: none;
+}
+
+#leftMenu>li:hover>ul>li {
+	display: inline;
+	float: left;
+	list-style: none;
+	font-size: 14px;
+	padding-right: 20px;
+	margin-top: 15px;
+}
+
+.leftMenuDown {
+	width: 5000%;
+}
+
+.leftMenuDown>li>a {
+	text-decoration: none;
+	color: grey;
+	font-size: 12px;
+}
+
+.leftMenuDown>li>a:hover {
+	color: lightgrey;
+}
+
+#rightMenu>li {
+	float: right;
+	list-style: none;
+	margin-right: 20px;
+}
+
+#rightMenu>li>a {
+	font-weight: 600;
+	font-size: 16px;
+	color: grey;
+}
+
+#rightMenu>li>a:hover {
+	text-decoration: none;
+	color: lightgrey;
+}
+
+.logo, #topLeftMenuContainer {
+	float: left;
+}

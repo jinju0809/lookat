@@ -1,0 +1,46 @@
+@charset "UTF-8";
+
+.col-lg-9>table {
+	width: 100%;
+	text-align: center;
+	border: 1px solid lightgrey;
+	border-right: white;
+	border-left: white;
+}
+
+#center {
+	text-align: center;
+}
+
+.col-lg-9 {
+	margin-top: 50px;
+	margin-bottom: 50px;
+	margin-left: 13%;
+}
+
+#tbb {
+	font-weight: bold;
+	text-align: center;
+}
+
+.ordertable {
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+}
+
+#info {
+	padding-bottom: 5px;
+}
+
+body {
+	font-size: 12px;
+}
+
+a {
+	color: #616264;
+}
+
+a:hover {
+	text-decoration: none;
+	color: #F15B5B;
+}

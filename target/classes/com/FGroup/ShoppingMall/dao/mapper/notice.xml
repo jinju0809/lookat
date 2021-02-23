@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- SELECT N.*, M.M_NAME
+FROM NOTICE N, MEMBERS M
+WHERE N.N_M_NO = M.M_NO AND N.RN BETWEEN #{param1} AND #{param2}
+ORDER BY N.N_NO DESC -->
+<mapper namespace="com.FGroup.ShoppingMall.dao.NoticeDao">
+
+	<!-- 전체 게시물 보기 -->
+	<select id="noticeList" resultType="com.FGroup.ShoppingMall.dto.NoticeDto">
+		SELECT B.*
+		  FROM (SELECT ROWNUM AS RN, A.*
+				  FROM (SELECT N.*, M.M_NAME
+						  FROM NOTICE N, MEMBERS M
+						 WHERE N.N_M_NO = M.M_NO
+					  ORDER BY N.N_NO DESC) A ) B
+		WHERE B.RN BETWEEN #{param1} AND #{param2}
+	</select>
+
+	<!-- 전체 게시물 세기 -->
+	<select id="totalRecord" resultType="int">
+		SELECT COUNT(*)
+		  FROM NOTICE
+	</select>
+
+	<!-- 게시물 보기 -->
+	<select id="noticeView" parameterType="int" resultType="com.FGroup.ShoppingMall.dto.NoticeDto">
+		SELECT M.M_NAME, N.*
+		  FROM NOTICE N, MEMBERS M
+		 WHERE N_NO = #{n_no}
+		   AND N.N_M_NO = M.M_NO
+	</select>
+
+	<!-- 게시물 작성 -->
+	<insert id="noticeInsert">
+		INSERT INTO
+		NOTICE (N_NO, N_TITLE, N_M_NO, N_CONTENT, N_DATE, N_HIT, N_FILENAME)
+		VALUES (NOTICE_SEQ.NEXTVAL, #{param1}, #{param2}, #{param3}, SYSDATE, 0, #{param4})
+	</insert>
+
+	<!-- 게시물 번호 -->
+	<select id="noticeNo" resultType="int">
+		SELECT N_NO
+		  FROM NOTICE
+		 WHERE N_M_NO = #{param1}
+	</select>
+
+	<!-- 게시물 삭제 -->
+	<delete id="noticeDelete" parameterType="int">
+		DELETE
+		  FROM NOTICE
+		 WHERE N_NO = #{n_no}
+	</delete>
+
+	<!-- 게시판 수정 -->
+	<update id="noticeUpdate">
+		UPDATE NOTICE
+		   SET N_TITLE = #{param1},
+		       N_CONTENT = #{param2},
+		       N_FILENAME = #{param4}
+		 WHERE N_NO = #{param3}
+	</update>
+
+	<!-- 게시판 조회수 -->
+	<update id="noticeHit" parameterType="int">
+		UPDATE NOTICE
+		   SET N_HIT = N_HIT+1
+		 WHERE N_NO = #{n_no}
+	</update>
+
+	<!-- 게시물 검색 -->
+	<select id="queryNoticeList" parameterType="Map" resultType="com.FGroup.ShoppingMall.dto.NoticeDto">
+		SELECT B.*
+		  FROM (SELECT ROWNUM AS RN, A.*
+				  FROM (SELECT N.*, M.M_NAME
+						  FROM NOTICE N, MEMBERS M
+						 WHERE N.N_M_NO = M.M_NO
+						   AND <if test="column!='BOTH'">${column} LIKE '%' || #{query} || '%'</if>
+						       <if test="column=='BOTH'">(N_TITLE LIKE '%' || #{query} || '%' OR N_CONTENT LIKE '%' || #{query} || '%')</if>
+					  ORDER BY N.N_NO DESC) A) B
+		 WHERE B.RN BETWEEN #{beginRecord} AND #{endRecord}
+	</select>
+
+	<!-- 검색된 게시물 총수 -->
+	<select id="getTotalQueryRecord" parameterType="Map" resultType="int">
+		SELECT COUNT(*)
+		  FROM NOTICE N, MEMBERS M
+		 WHERE N.N_M_NO = M.M_NO
+		   AND <if test="column!='BOTH'">${column} LIKE '%' || #{query} || '%'</if>
+		       <if test="column=='BOTH'">(N_TITLE LIKE '%' || #{query} || '%' OR N_CONTENT LIKE '%' || #{query} || '%')</if>
+	</select>
+	
+</mapper>

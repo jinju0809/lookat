@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- SELECT N.*, M.M_NAME
+FROM REVIEWS N, MEMBERS M
+WHERE N.RV_M_NO = M.M_NO AND N.RN BETWEEN #{param1} AND #{param2}
+ORDER BY N.RV_NO DESC -->
+<mapper namespace="com.FGroup.ShoppingMall.dao.ReviewDao">
+
+	<!-- 전체 게시물 보기 -->
+	<select id="reviewList" resultType="com.FGroup.ShoppingMall.dto.ReviewDto">
+		SELECT B.*
+		  FROM (SELECT ROWNUM AS RN, A.*
+		  		FROM (SELECT N.*, M.M_NAME, P.*
+		  			    FROM REVIEWS N, MEMBERS M, PRODUCT P
+		  			   WHERE N.RV_M_NO = M.M_NO
+		  			     AND N.RV_P_NO = P.P_NO
+		  			ORDER BY N.RV_NO DESC) A ) B
+		 WHERE B.RN BETWEEN #{param1} AND #{param2}
+	</select>
+	
+	<!-- 전체 게시물 세기 -->
+	<select id="totalRecord" resultType="int">
+		SELECT COUNT(*)
+		  FROM REVIEWS
+	</select>
+	
+	<!-- 게시물 보기 -->
+	<select id="reviewView" parameterType="int" resultType="com.FGroup.ShoppingMall.dto.ReviewDto">
+		SELECT M.M_NAME, N.*, P.*
+		  FROM REVIEWS N, MEMBERS M, PRODUCT P
+		 WHERE RV_NO = #{rv_no}
+		   AND N.RV_M_NO = M.M_NO
+		   AND N.RV_P_NO = P.P_NO
+	</select>
+	
+	<!-- 게시물 작성 -->
+	<insert id="reviewInsert">
+		INSERT INTO
+	   REVIEWS (RV_NO, RV_TITLE, RV_CONTENT, RV_REGDATE, RV_HIT, RV_FILENAME, RV_M_NO, RV_P_NO)
+	  	VALUES (REVIEWS_SEQ.NEXTVAL, #{param1}, #{param3}, SYSDATE, 0, #{param4}, #{param2}, #{param5})	
+	</insert>
+	
+	<!-- 게시물 번호 -->
+	<select id="reviewNo" resultType="int">
+		SELECT RV_NO
+		  FROM REVIEWS
+		 WHERE RV_M_NO = #{param1}
+	</select>
+	
+	<!-- 게시물 삭제  -->
+	<delete id="reviewDelete" parameterType="int">
+		DELETE
+		  FROM REVIEWS
+		 WHERE RV_NO = #{rv_no}	
+	</delete>
+	
+	<!-- 게시판 수정 -->
+	<update id="reviewUpdate">
+		UPDATE REVIEWS
+		   SET RV_TITLE = #{param1}, RV_CONTENT = #{param2}, RV_FILENAME = #{param4}
+		 WHERE RV_NO = #{param3}
+	</update>
+	
+	 <!-- 게시판 조회수 -->
+    <update id="reviewHit" parameterType="int">
+    	UPDATE REVIEWS
+    	   SET RV_HIT = RV_HIT+1
+    	 WHERE RV_NO = #{rv_no}
+    </update>
+    
+    <!-- 게시물 검색 -->
+    <select id="queryReviewList" parameterType="Map" resultType="com.FGroup.ShoppingMall.dto.ReviewDto">
+		SELECT B.*
+		  FROM (SELECT ROWNUM AS RN, A.*
+		  		  FROM (SELECT N.*, M.M_NAME, P.*
+		  			      FROM REVIEWS N, MEMBERS M, PRODUCT P
+		  		   		 WHERE N.RV_M_NO = M.M_NO 
+		  		   		   AND N.RV_P_NO = P.P_NO
+		  		   		   AND <if test="column!='BOTH'">${column} LIKE '%' || #{query} || '%'</if>
+		       				   <if test="column=='BOTH'">(RV_TITLE LIKE '%' || #{query} || '%' OR RV_CONTENT LIKE '%' || #{query} || '%')</if>
+		  		   	  ORDER BY N.RV_NO DESC) A) B
+		 WHERE B.RN BETWEEN #{beginRecord} AND #{endRecord}
+	</select>
+    
+    <!-- 검색된 게시물 총수 -->
+    <select id="getTotalQueryRecord" parameterType="Map" resultType="int">
+		SELECT COUNT(*)
+		  FROM REVIEWS N, MEMBERS M, PRODUCT P
+		 WHERE N.RV_M_NO = M.M_NO
+		   AND N.RV_P_NO = P.P_NO
+		   AND <if test="column!='BOTH'">${column} LIKE '%' || #{query} || '%'</if>
+		       <if test="column=='BOTH'">(RV_TITLE LIKE '%' || #{query} || '%' OR RV_CONTENT LIKE '%' || #{query} || '%')</if>
+	</select>
+	
+</mapper>

@@ -1,0 +1,62 @@
+.img-fluid {
+	width: 100%;
+	position: relative;
+}
+
+.flubox {
+	padding: 0;
+	margin: 0;
+}
+
+footer {
+	z-index: 2;
+	position: fixed;
+	width: 100%;
+}
+
+header {
+	z-index: 3;
+}
+
+footer>div {
+	color: white;
+}
+
+footer>span {
+	color: white;
+}
+
+.carousel-control-prev, .carousel-control-next {
+	position: relative;
+	z-index: 0 !important;
+}
+
+input {
+	border-radius: 5px;
+	background-color: black;
+	color: white;
+	width: 5em;
+	font-size: 1em;
+	padding: 6px;
+}
+
+#btnsearch {
+	background-color: #6F606E;
+	color: #F5F0C5;
+	border-radius: 5px;
+}
+
+#btnsearch:hover {
+	background-color: #6F606E;
+	color: #F5F0C5;
+	background-color: #47302E;
+}
+
+.logo>a>img {
+	margin-left: 2em;
+}
+
+/* .my-9{  이거하려면 my-4 를 my-9로 바꿔야한다.
+	margin:0 !important;
+}
+ */

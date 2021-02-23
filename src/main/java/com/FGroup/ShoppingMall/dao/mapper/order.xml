@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.FGroup.ShoppingMall.dao.OrderDao">
+
+	<update id="OrderProductStockAdd">
+		UPDATE PRODUCT
+		   SET P_AMOUNT = (P_AMOUNT + #{param2})
+		 WHERE P_NO = #{param1}
+	</update>
+
+	<!-- 제품정보 가져오기 -->
+	<select id="OrderProduct" parameterType="int" resultType="com.FGroup.ShoppingMall.dto.ProductDto">
+		SELECT *
+		  FROM PRODUCT
+		 WHERE P_NO = #{p_No}
+	</select>
+	
+	<!-- 멤버정보 가져오기 -->
+	<select id="OrderMember" parameterType="int" resultType="com.FGroup.ShoppingMall.dto.MemberDto">
+		SELECT *
+		  FROM MEMBERS
+		 WHERE M_NO = #{param1}
+	</select>
+
+	<!-- 주문하기로한 제품을 카트에 담기 -->
+	<insert id="OrderCart">
+		INSERT INTO
+		  CART (CRT_NO, CRT_M_NO, CRT_P_NO, CRT_AMOUNT)
+		VALUES (CART_SEQ.NEXTVAL, #{param1}, #{param2}, #{param3})
+	</insert>
+
+	<!-- order에 정보입력 -->
+	<insert id="OrderInsert" parameterType="com.FGroup.ShoppingMall.dto.OrderDto">
+		INSERT INTO
+		ORDERS (O_NO, O_M_NO, O_P_NO, O_AMOUNT, O_REGDATE, O_NAME, O_ADDR1, O_ADDR2, O_ADDR3, O_CELLPHONE, O_PAYMENT, O_NOTE, O_PRICE, O_POINT, O_IDX, O_DELIVERY)
+		VALUES (ORDERS_SEQ.NEXTVAL, #{o_m_no}, #{o_p_no}, #{o_amount}, SYSDATE, #{o_name}, #{o_addr1}, #{o_addr2}, #{o_addr3}, #{o_cellphone}, #{o_payment}, #{o_note}, #{o_price}, #{o_point}, #{o_idx}, #{o_delivery})
+	</insert>
+
+	<update id="orderIdxUpdate">
+		UPDATE ORDERS
+		   SET O_IDX = O_IDX + 1
+		 WHERE O_IDX > 0
+	</update>
+	
+	<update id="orderIdxDecrease">
+		UPDATE ORDERS
+		   SET O_IDX = O_IDX - 1
+		 WHERE O_IDX > 0
+	</update>
+
+	<!-- 페이징 포함 리스트 -->
+	<select id="OrderList" resultType="com.FGroup.ShoppingMall.dto.OrderDto">
+		SELECT *
+		  FROM ORDERS
+		 WHERE O_M_NO = #{param1}
+	  ORDER BY O_NO DESC
+	</select>
+	
+	<select id="OrderLists" resultType="com.FGroup.ShoppingMall.dto.OrderDto">
+		SELECT B.*
+		  FROM (SELECT ROWNUM AS RN, A.*
+				  FROM (SELECT *
+						  FROM ORDERS
+						 WHERE O_M_NO = #{param1}
+						   AND O_NO IN (SELECT MAX(O_NO)
+										  FROM ORDERS
+									  GROUP BY O_IDX))A
+					  ORDER BY O_NO DESC)B
+		 WHERE B.RN BETWEEN #{param2} AND #{param3}
+	</select>
+	
+	<select id="totalRecord" resultType="int">
+		SELECT COUNT(DISTINCT O_IDX)
+		  FROM ORDERS
+		 WHERE O_M_NO = #{param1}
+	</select>
+
+	<!-- 주문완료시 재고줄임 -->
+	<update id="OrderProductStock">
+		UPDATE PRODUCT
+		   SET P_AMOUNT = (P_AMOUNT- #{param2})
+		 WHERE P_NO = #{param1}
+	</update>
+
+	<!-- 주문완료시 포인트줄임 -->
+	<update id="OrderPoint">
+		UPDATE MEMBERS
+		   SET M_POINT = (M_POINT - #{param2})
+		 WHERE M_NO = #{param1}
+	</update>
+
+	<update id="OrderPointIncrease">
+		UPDATE MEMBERS
+		   SET M_POINT = (M_POINT + #{param2})
+		 WHERE M_NO = #{param1}
+	</update>
+
+	<!-- 주문확인 -->
+	<select id="OrderView" parameterType="int" resultType="com.FGroup.ShoppingMall.dto.OrderDto">
+		SELECT *
+		  FROM ORDERS
+		 WHERE O_NO = #{param1}
+	</select>
+
+	<select id="OrderView2" parameterType="int" resultType="com.FGroup.ShoppingMall.dto.OrderDto">
+		SELECT *
+		  FROM ORDERS
+		 WHERE O_IDX = #{param1}
+	</select>
+
+	<!-- 주문하면 카트에서 삭제 -->
+	<delete id="OrderCartDelete">
+		DELETE
+		  FROM CART
+		 WHERE CRT_M_NO = #{param1}
+		   AND CRT_P_NO = #{param2}
+	</delete>
+	
+	<!-- 제품번호만 가져옴.. -->
+	<select id="OrderProductNo" parameterType="int" resultType="int">
+		SELECT O_P_NO
+		  FROM ORDERS
+		 WHERE O_NO = #{param1}
+	</select>
+	
+	<!-- 오더삭제 -->
+	<delete id="OrderDelete" parameterType="int">
+		DELETE
+		  FROM ORDERS
+		 WHERE O_NO = #{param1}
+	</delete>
+	
+	<delete id="OrderDelete2" parameterType="int">
+		DELETE
+		  FROM ORDERS
+		 WHERE O_IDX = #{param1}
+	</delete>
+	
+	<!-- 카트에 있는 제품 정보 가져옴 -->
+	<select id="OrderCarts" resultType="com.FGroup.ShoppingMall.dto.CartDto">
+		SELECT *
+		  FROM CART
+		 WHERE CRT_M_NO = #{param1}
+		   AND CRT_P_NO = #{param2}
+	</select>
+
+	<select id="orderAll" parameterType="int" resultType="int">
+		SELECT CRT_P_NO
+		  FROM CART
+		 WHERE CRT_M_NO = #{param1}
+	</select>
+	
+	<select id="orderStatus" parameterType="int" resultType="String">
+		SELECT O_DELIVERY
+		  FROM ORDERS
+		 WHERE O_M_NO = #{param1}
+		   AND O_NO IN (SELECT MAX(O_NO)
+						  FROM ORDERS
+					  GROUP BY O_IDX)
+	</select>
+	
+</mapper>

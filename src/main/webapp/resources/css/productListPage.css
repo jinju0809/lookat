@@ -1,0 +1,78 @@
+body {
+	font-size: 14px;
+}
+
+.list-group {
+	border: none;
+	position: fixed;
+	left: 10%;
+	top: 8em;
+	width: 180px;
+}
+
+.list-g {
+	list-style: none;
+}
+
+#list {
+	margin-top: 3em;
+	font-size: 1.1em;
+}
+
+#list-top {
+	margin-top: 3em;
+}
+
+#list-top>a {
+	text-decoration: none;
+}
+
+#list>a {
+	color: #616264;
+}
+
+#list>a:hover {
+	text-decoration: none;
+	color: #F15B5B;
+	font-weight: bold;
+}
+
+.card-title>a {
+	color: #616264;
+	font-size: 13px;
+}
+
+.card-title>a:hover {
+	text-decoration: none;
+	color: #F15B5B;
+	font-weight: bold;
+}
+
+.col-lg-9 {
+	width: 68%;
+	margin: 0 auto;
+	min-width: 300px;
+	min-height: 500px;
+	padding: 110px 0 50px 30px;
+	margin-right: 70px;
+}
+
+.row {
+	
+}
+
+.card {
+	border: none;
+}
+
+.card>a {
+	font-size: 10px;
+}
+
+.mb-4 {
+	padding: 5px;
+}
+
+.card-body {
+	padding: 1em 0.5em;
+}

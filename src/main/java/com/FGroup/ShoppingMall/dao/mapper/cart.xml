@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.FGroup.ShoppingMall.dao.CartDao">
+
+	<insert id="cartInsert">
+		INSERT INTO
+		  CART (CRT_NO, CRT_M_NO, CRT_P_NO, CRT_AMOUNT)
+		VALUES (CART_SEQ.NEXTVAL, #{param1}, #{param2}, #{param3})
+	</insert>
+
+	<select id="totalRecord" resultType="int">
+		SELECT COUNT(*)
+		  FROM CART
+		 WHERE CRT_M_NO = #{param1}
+	</select>
+	
+	<select id="cartList" resultType="com.FGroup.ShoppingMall.dto.CartDto">
+		SELECT B.*
+		  FROM (SELECT ROWNUM AS RN, A.*
+				  FROM (SELECT *
+						  FROM CART
+						 WHERE CRT_M_NO = #{param1}
+					  ORDER BY CRT_NO DESC) A) B
+		WHERE B.RN BETWEEN #{param2} AND #{param3}
+	</select>
+
+	<select id="cartProduct" parameterType="int" resultType="com.FGroup.ShoppingMall.dto.ProductDto">
+		SELECT *
+		  FROM PRODUCT
+		 WHERE P_NO = #{param1}
+	</select>
+
+	<delete id="cartDelete">
+		DELETE FROM CART
+		 WHERE CRT_P_NO = #{param1} AND CRT_M_NO = #{param2}
+	</delete>
+
+	<select id="memberCart" parameterType="int" resultType="int">
+		SELECT CRT_P_NO
+		  FROM CART
+		 WHERE CRT_M_NO = #{param1}
+	</select>
+
+	<select id="cartCount" parameterType="int" resultType="int">
+		SELECT COUNT(*)
+		  FROM CART
+		 WHERE CRT_M_NO = #{param1}
+	</select>
+
+	<update id="cartUpdate">
+		UPDATE CART
+		   SET CRT_AMOUNT = #{param3}
+		 WHERE CRT_M_NO = #{param1}
+		   AND CRT_P_NO = #{param2}
+	</update>
+	
+</mapper>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.FGroup.ShoppingMall.dao.AdminDao">
+
+	<select id="memberList" resultType="com.FGroup.ShoppingMall.dto.MemberDto">
+		SELECT *
+		  FROM MEMBERS
+		 WHERE ${param1} LIKE '%' || #{param2} || '%'
+	</select>
+
+	<update id="memberMGUpdate" parameterType="com.FGroup.ShoppingMall.dto.MemberDto">
+		UPDATE MEMBERS
+		   SET M_NAME = #{param2},
+		       M_ADDR1 = #{param3},
+		       M_ADDR2 = #{param4},
+		       M_ADDR3 = #{param5},
+		       M_PHONE = #{param6},
+		       M_EMAIL = #{param7},
+		       M_GRADE = #{param8}
+		 WHERE M_NO = #{param1}
+	</update>
+
+	<select id="memberOrderList" resultType="com.FGroup.ShoppingMall.dto.OrderDto">
+		SELECT *
+		  FROM ORDERS
+		 WHERE O_NO IN (SELECT MAX(O_NO)
+		 				  FROM ORDERS
+		 			  GROUP BY O_IDX)
+	  ORDER BY O_NO DESC
+	</select>
+	
+	<select id="memberOrderPage" resultType="com.FGroup.ShoppingMall.dto.OrderDto">
+		SELECT *
+		  FROM ORDERS
+		 WHERE O_M_NO = #{param1}
+		       O_NO IN (SELECT MAX(O_NO)
+						  FROM ORDERS
+					  GROUP BY O_IDX)
+	  ORDER BY O_NO DESC
+	</select>
+
+	<update id="memberDeliveryStatus">
+		UPDATE ORDERS
+		   SET O_DELIVERY = #{param1}
+		 WHERE O_IDX = #{param2}
+	</update>
+
+</mapper>

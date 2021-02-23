@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
+	
+	<!-- Enables the Spring MVC @Controller programming model -->
+	<annotation-driven />
+
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+	<resources mapping="/resources/**" location="/resources/" />
+	<resources mapping="/css/**" location="/css/" />
+	<resources mapping="/js/**" location="/js/" />
+	<resources mapping="/toolbar/**" location="/toolbar/" />
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
+	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>
+	
+	<context:component-scan base-package="com.FGroup.ShoppingMall" />
+	
+	<!-- command -->
+	
+	<!-- member -->
+	<beans:bean id="memberLoginURLCommand" 	class="com.FGroup.ShoppingMall.command.member.MemberLoginURLCommand" />
+	<beans:bean id="memberLoginCommand" class="com.FGroup.ShoppingMall.command.member.MemberLoginCommand" />
+	<beans:bean id="memberLogoutCommand" class="com.FGroup.ShoppingMall.command.member.MemberLogoutCommand" />
+	<beans:bean id="memberIdCheckCommand" class="com.FGroup.ShoppingMall.command.member.MemberIdCheckCommand" />
+	<beans:bean id="memberFindIdCommand" class="com.FGroup.ShoppingMall.command.member.MemberFindIdCommand" />
+	<beans:bean id="memberFindPasswordCommand" 	class="com.FGroup.ShoppingMall.command.member.MemberFindPasswordCommand" />
+	<beans:bean id="memberEmailAuthCommand" class="com.FGroup.ShoppingMall.command.member.MemberEmailAuthCommand" />
+	<beans:bean id="memberEmailAuthConfirmCommand" class="com.FGroup.ShoppingMall.command.member.MemberEmailAuthConfirmCommand" />
+	<beans:bean id="memberRegisterCommand" class="com.FGroup.ShoppingMall.command.member.MemberRegisterCommand" />
+	<beans:bean id="memberChangePasswordCommand" class="com.FGroup.ShoppingMall.command.member.MemberChangePasswordCommand" />
+	<beans:bean id="memberUpdateCommand" class="com.FGroup.ShoppingMall.command.member.MemberUpdateCommand" />
+	<beans:bean id="memberDeleteCommand" class="com.FGroup.ShoppingMall.command.member.MemberDeleteCommand" />
+	
+	<!-- product -->
+	<beans:bean id="productListCommand" class="com.FGroup.ShoppingMall.command.product.ProductListCommand" />
+	<beans:bean id="productCategoryCommand" class="com.FGroup.ShoppingMall.command.product.ProductCategoryCommand" />
+	<beans:bean id="productViewCommand" class="com.FGroup.ShoppingMall.command.product.ProductViewCommand" />
+	<beans:bean id="productSearchCommand" class="com.FGroup.ShoppingMall.command.product.ProductSearchCommand" />
+	
+	<!-- cart -->
+	<beans:bean id="cartInsertCommand" 	class="com.FGroup.ShoppingMall.command.cart.CartInsertCommand" />
+	<beans:bean id="cartListCommand" class="com.FGroup.ShoppingMall.command.cart.CartListCommand" />
+	<beans:bean id="cartDeleteCommand" 	class="com.FGroup.ShoppingMall.command.cart.CartDeleteCommand" />
+	<beans:bean id="cartCheckCommand" class="com.FGroup.ShoppingMall.command.cart.CartCheckCommand" />
+	<beans:bean id="cartUpdateCommand" 	class="com.FGroup.ShoppingMall.command.cart.CartUpdateCommand" />
+
+	<!-- order -->
+	<beans:bean id="orderDoCommand" class="com.FGroup.ShoppingMall.command.order.OrderDoCommand" />
+	<beans:bean id="orderInsertCommand" class="com.FGroup.ShoppingMall.command.order.OrderInsertCommand" />
+	<beans:bean id="orderListCommand" class="com.FGroup.ShoppingMall.command.order.OrderListCommand" />
+	<beans:bean id="orderViewCommand" class="com.FGroup.ShoppingMall.command.order.OrderViewCommand" />
+	<beans:bean id="orderDeleteCommand" class="com.FGroup.ShoppingMall.command.order.OrderDeleteCommand" />
+	<beans:bean id="orderCheckCommand" 	class="com.FGroup.ShoppingMall.command.order.OrderCheckCommand" />
+	
+	<!-- review -->
+	<beans:bean id="reviewListCommand" 	class="com.FGroup.ShoppingMall.command.review.ReviewListCommand" />
+	<beans:bean id="reviewViewCommand" 	class="com.FGroup.ShoppingMall.command.review.ReviewViewCommand" />
+	<beans:bean id="reviewInsertCommand" class="com.FGroup.ShoppingMall.command.review.ReviewInsertCommand" />
+	<beans:bean id="reviewDeleteCommand" class="com.FGroup.ShoppingMall.command.review.ReviewDeleteCommand" />
+	<beans:bean id="reviewUpdateCommand" class="com.FGroup.ShoppingMall.command.review.ReviewUpdateCommand" />
+	<beans:bean id="reviewQueryListCommand" class="com.FGroup.ShoppingMall.command.review.ReviewQueryListCommand" />
+	<beans:bean id="reviewInsertPageCommand" class="com.FGroup.ShoppingMall.command.review.ReviewInsertPageCommand" />
+
+	<!-- qna -->
+	<beans:bean id="qnaListCommand" class="com.FGroup.ShoppingMall.command.qna.QnaListCommand" />
+	<beans:bean id="qnaViewCommand" class="com.FGroup.ShoppingMall.command.qna.QnaViewCommand" />
+	<beans:bean id="qnaInsertCommand" class="com.FGroup.ShoppingMall.command.qna.QnaInsertCommand" />
+	<beans:bean id="qnaDeleteCommand" class="com.FGroup.ShoppingMall.command.qna.QnaDeleteCommand" />
+	<beans:bean id="qnaUpdateCommand" class="com.FGroup.ShoppingMall.command.qna.QnaUpdateCommand" />
+	<beans:bean id="qnaQueryListCommand" class="com.FGroup.ShoppingMall.command.qna.QnaQueryListCommand" />
+	<beans:bean id="qnaInsertPageCommand" class="com.FGroup.ShoppingMall.command.qna.QnaInsertPageCommand" />
+	<beans:bean id="qnaPasswordInsertCommand" class="com.FGroup.ShoppingMall.command.qna.QnaPasswordInsertCommand" />
+
+	<!-- notice -->
+	<beans:bean id="noticeListCommand" class="com.FGroup.ShoppingMall.command.notice.NoticeListCommand" />
+	<beans:bean id="noticeViewCommand" class="com.FGroup.ShoppingMall.command.notice.NoticeViewCommand" />
+	<beans:bean id="noticeInsertCommand" class="com.FGroup.ShoppingMall.command.notice.NoticeInsertCommand" />
+	<beans:bean id="noticeDeleteCommand" class="com.FGroup.ShoppingMall.command.notice.NoticeDeleteCommand" />
+	<beans:bean id="noticeUpdateCommand" class="com.FGroup.ShoppingMall.command.notice.NoticeUpdateCommand" />
+	<beans:bean id="noticeQueryListCommand" class="com.FGroup.ShoppingMall.command.notice.NoticeQueryListCommand" />
+
+	<!-- reply -->
+	<beans:bean id="replyInsertCommand" class="com.FGroup.ShoppingMall.command.reply.ReplyInsertCommand" />
+	<beans:bean id="rereplyInsertCommand" class="com.FGroup.ShoppingMall.command.reply.RereplyInsertCommand" />
+	<beans:bean id="replyDeleteCommand" class="com.FGroup.ShoppingMall.command.reply.ReplyDeleteCommand" />
+	<beans:bean id="replyUpdateCommand" class="com.FGroup.ShoppingMall.command.reply.ReplyUpdateCommand" />
+
+	<!-- r_reply -->
+	<beans:bean id="r_replyInsertCommand" class="com.FGroup.ShoppingMall.command.reviewReply.R_ReplyInsertCommand" />
+	<beans:bean id="r_rereplyInsertCommand" class="com.FGroup.ShoppingMall.command.reviewReply.R_RereplyInsertCommand" />
+	<beans:bean id="r_replyDeleteCommand" class="com.FGroup.ShoppingMall.command.reviewReply.R_ReplyDeleteCommand" />
+	<beans:bean id="r_replyUpdateCommand" class="com.FGroup.ShoppingMall.command.reviewReply.R_ReplyUpdateCommand" />
+
+	<!-- q_reply -->
+	<beans:bean id="q_replyInsertCommand" class="com.FGroup.ShoppingMall.command.qnaReply.Q_ReplyInsertCommand" />
+	<beans:bean id="q_rereplyInsertCommand" class="com.FGroup.ShoppingMall.command.qnaReply.Q_RereplyInsertCommand" />
+	<beans:bean id="q_replyDeleteCommand" class="com.FGroup.ShoppingMall.command.qnaReply.Q_ReplyDeleteCommand" />
+	<beans:bean id="q_replyUpdateCommand" class="com.FGroup.ShoppingMall.command.qnaReply.Q_ReplyUpdateCommand" />
+		
+	<!-- admin -->
+	
+	<!-- 회원 -->
+	<beans:bean id="adminMemberMGCommand" class="com.FGroup.ShoppingMall.command.admin.AdminMemberMGCommand" />
+	<beans:bean id="adminMemberMGDeleteCommand" class="com.FGroup.ShoppingMall.command.admin.AdminMemberMGDeleteCommand" />
+	<beans:bean id="adminMemberMGProfileCommand" class="com.FGroup.ShoppingMall.command.admin.AdminMemberMGProfileCommand" />
+	<beans:bean id="adminMemberMGUpdateCommand" class="com.FGroup.ShoppingMall.command.admin.AdminMemberMGUpdateCommand" />
+	<beans:bean id="adminMemberMGSendPasswordCommand" class="com.FGroup.ShoppingMall.command.admin.AdminMemberMGSendPasswordCommand" />
+	
+	<!-- 배송 -->
+	<beans:bean id="adminMemberDCommand" class="com.FGroup.ShoppingMall.command.admin.AdminMemberDeliveryCommand" />
+	<beans:bean id="adminMemberDSCommand" class="com.FGroup.ShoppingMall.command.admin.AdminMemberDSCommand" />
+
+	<!-- 주문 -->
+	<beans:bean id="adminMemberODCommand" class="com.FGroup.ShoppingMall.command.admin.AdminMemberODCommand" />
+	
+</beans:beans>
